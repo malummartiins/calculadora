@@ -7,4 +7,4 @@ Reforçando conceitos básicos da programção especialmente funções.
 
 Esse é o resultado visual:
 
-![Alt text](image.png)
+![image](https://github.com/malummartiins/calculadora/assets/130713333/223603f3-4fc2-4394-bff7-8c4e06c0eeca)
