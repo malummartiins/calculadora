@@ -12,25 +12,25 @@ function updateResultado(originClear = false){
     result.innerText = originClear ? 0 : currentNumber.replace(".", ",");
 }
 
-function addDigit(digit){
-    if (addDigit === "," && (currentNumber.includes(",") || currentNumber))
+function addDigit(digit){ //funcao para add o digito ao visor
+    if (addDigit === "," && (currentNumber.includes(",") || !currentNumber)) //ver se já tem uma virgula se tiver ele retorna
     return;
 
-    if (restart){
+    if (restart){ 
         currentNumber = digit;
-        restart = false;
+        restart = false;  //vai ser true apenas quando eu calcular 
     }else{
-        currentNumber += digit;
+        currentNumber += digit; //se nao, ele apenas segue concatenando um num no outro (123)...
     }
 
-    updateResultado();
+    updateResultado(); //função para atualizar em tela isso
 }
 
-function setOperador(newOpe){
-    if(currentNumber){
+function setOperador(newOpe){ //recebe o op por parametro
+    if(currentNumber){        //verifica se tem algum num atual
         calculate();
 
-        firstOpe = parseFloat(currentNumber.replace(",", "."));
+        firstOpe = parseFloat(currentNumber.replace(",", ".")); //o que tiver vira o primeiro op e o  num atual fica vazio
         currentNumber = "";
     }
 
@@ -39,9 +39,9 @@ function setOperador(newOpe){
 
 
 function calculate(){ //aqui faz o calculo
-    if(operador === null || firstOpe === null) result; //verfica se tem o primeiro num e o operador
+    if(operador === null || firstOpe === null) result; //verfica se tem o primeiro num e o operador para poder calcular
     let secondOpe = parseFloat(currentNumber.replace(",", ".")); //pega o segundo operador que é o num atual e troca a virgula pra ponta pra fzer o calc
-    let ValorFinal;
+    let ValorFinal;  //onde vou guardar o resultado da ope
 
     //faço um switch para verificar os op e escolher a melhor calculo
 
@@ -71,18 +71,18 @@ function calculate(){ //aqui faz o calculo
     }else{
         currentNumber = ValorFinal.toString(); //senao ele só pega o result normal
     }
-
+         //feito o calculo isso acontece:  isso significa que apos eu clicar em = o próximo num que eu clicar o visor já reinicia
     operador = null;
     firstOpe = null;
-    restart = true;
-    updateResultado();
+    restart = true; 
+    updateResultado();  //atualiza no visor o resultado da ope
 }
 
 function clearCalculator(){
-    currentNumber = "";
-    firstOpe = null;
+    currentNumber = "";   //num atual fica vazio
+    firstOpe = null;    //tudo vazio
     operador = null;
-    updateResultado (true);
+    updateResultado (true);  //atualiza pra ficar vazio
 }
 
 function setPercentage() {
@@ -105,19 +105,19 @@ buttons.forEach((button) => {
     const TextoBotao = button.innerText;      //var para pegar o texto do botao que estou clicando 
     if(/^[0-9]+$/.test(TextoBotao)){         // verificacao com regex, se o texto que estou clicando for de 0 a 9, ou for virgula ele passa no test, e chama a função addDigit passando como paramentro esse texto do btn 
         addDigit(TextoBotao);
-    }else if(["+","-","x","÷"].includes(TextoBotao)) {    // verificar se o btn clicado é um operador
-        setOperador(TextoBotao)
-    }else if(TextoBotao === "="){
-        calculate();
+    }else if(["+","-","x","÷"].includes(TextoBotao)) {    // 1)coloca os op em um array  2)verificar se o btn clicado é um operador atraves do includes() se sim, chama o setOperador()
+        setOperador(TextoBotao)     //função que verifica se o btn que cliquei é um operador
+    }else if(TextoBotao === "="){   //clico no = e chama o calcular
+        calculate();                //CALCULO REAL - alma da calculadora esta aqui
     }  else if (TextoBotao === "C") {
-        clearCalculator();
+        clearCalculator();    //função para limpar o visor
     } else if (TextoBotao === "±") {
-        currentNumber = (
+        currentNumber = (                //parte do code que muda o tipo do numero (positivo ou negativo)
           parseFloat(currentNumber || firstOpe) * -1
         ).toString();
         updateResultado();
       } else if (TextoBotao === "%") {
-        setPercentage();
+        setPercentage();                //calcula a porcentagem
       }
     })
 })
